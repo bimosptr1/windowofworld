@@ -1,0 +1,83 @@
+img.img {
+  margin-bottom: -90px;
+}
+
+p.txt {
+  color: black;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 33px;
+}
+
+.login {
+  width: 190px;
+  height: 50px;
+  margin-left: 31px;
+  margin-top: 107px;
+}
+
+.signup {
+  width: 190px;
+  height: 50px;
+  margin-top: 107px;
+}
+
+button.login {
+  width: 190px;
+  height: 50px;
+  background: rgba(205, 205, 205, 0.7);
+  border-radius: 5px;
+  color: #000000;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 25px;
+}
+
+button.signup {
+  width: 190px;
+  height: 50px;
+  background: #D60000;
+  border-radius: 5px;
+  color: #FFFFFF;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 25px;
+}
+
+.Heading {
+  margin-bottom: 29px;
+  font-family: Avenir;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 36px;
+  line-height: 49px;
+  color: #000000;
+}
+
+.inputForm {
+  height: 50px;
+  margin-bottom: 20px;
+}
+
+.inputControl {
+  background: rgba(210, 210, 210, 0.25);
+  height: 50px;
+}
+
+.ProfComp p {
+  font-family: Avenir;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.ProfComp p.listProf {
+  font-family: Google Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: #8A8C90;
+}
