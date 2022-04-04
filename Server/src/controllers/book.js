@@ -4,6 +4,8 @@ exports.addBook = async (req, res) => {
     try {
         const dataBook = req.body
 
+        const image = req.files.bookFile[0].filename;
+
         const createBook = await books.create({
             title: dataBook.title,
             publicationDate: dataBook.publicationDate,
@@ -11,7 +13,7 @@ exports.addBook = async (req, res) => {
             author: dataBook.author,
             isbn: dataBook.isbn,
             about: dataBook.about,
-            bookFile: dataBook.bookFile,
+            bookFile: image,
         })
 
         res.send({
@@ -21,6 +23,7 @@ exports.addBook = async (req, res) => {
             }
         })
     } catch (error) {
+        console.log(error)
         res.status(400).send({
             status: 'Bad Request',
             message: error

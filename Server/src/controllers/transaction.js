@@ -1,35 +1,5 @@
 const { transaction, user } = require('../../models')
 
-exports.addTransaction = async (req, res) => {
-    try {
-        const { transferProof, userId } = req.body
-
-        const createTrans = await transaction.create({
-            transferProof: transferProof,
-            userid: userId,
-            remainingActive: 30,
-            userStatus: "Active",
-            paymentStatus: "Approved",
-        })
-
-        res.send({
-            status: 'success',
-            data: {
-                transaction: { id: createTrans.id },
-                transferProof: createTrans.remainingActive,
-                userStatus: createTrans.userStatus,
-                paymentStatus: createTrans.paymentStatus
-            },
-        })
-    } catch (error) {
-        res.status(400).send({
-            status: 'Bad Request',
-            message: error
-        })
-        console.log(error)
-    }
-}
-
 exports.getTransaction = async (req, res) => {
     try {
         const allTrans = await transaction.findAll({
@@ -60,22 +30,65 @@ exports.getTransaction = async (req, res) => {
     }
 }
 
+exports.addTransaction = async (req, res) => {
+    try {
+        const { phoneNumber } = req.body
+        const idUser = req.user.id;
+
+        const image = req.files.transferProof[0].filename;
+
+        const createTrans = await transaction.create({
+            phoneNumber: phoneNumber,
+            transferProof: image,
+            userid: idUser, //req ke user
+            remainingActive: 30,
+            userStatus: "Not Active",
+            paymentStatus: "Pendding",
+        })
+
+        res.send({
+            status: 'success',
+            data: {
+                transaction: { id: createTrans.id },
+                transferProof: createTrans.transferProof,
+                userStatus: createTrans.userStatus,
+                paymentStatus: createTrans.paymentStatus
+            },
+        })
+    } catch (error) {
+        res.status(400).send({
+            status: 'Bad Request',
+            message: error
+        })
+        console.log(error)
+    }
+}
+
 exports.getTransactionId = async (req, res) => {
     try {
-        const id = req.params
+        const id = req.user.id
+        console.log(id);
         const trans = await transaction.findOne({
-            include: [{
-                model: user,
-                as: "user",
-                attributes: {
-                    exclude: ["createdAt", "updatedAt", "password", "role", "id"],
-                },
-            },
-            ],
+            where: { userid: id },
             attributes: {
                 exclude: ["createdAt", "updatedAt"],
             },
-        }, { where: id });
+            include: [
+                {
+                    model: user,
+                    as: "user",
+                    attributes: {
+                        exclude: ["createdAt", "updatedAt", "password", "role", "id", "gender", "phone", "address"],
+                    },
+                }]
+        });
+
+        if (!trans) {
+            return res.send({
+                status: "failed",
+                message: "data not found",
+            });
+        }
 
         res.send({
             status: 'success',
@@ -91,35 +104,86 @@ exports.getTransactionId = async (req, res) => {
     }
 }
 
-exports.updateTransaction = async (req, res) => {
+exports.patchApprove = async (req, res) => {
     try {
-        const id = req.params
-        const trans = req.body
+        const { id } = req.params
+        console.log(id);
+        // const trans = await transaction.findOne({
+        //     where: { userid: id },
+        //     attributes: {
+        //         exclude: ["createdAt", "updatedAt"],
+        //     },
+        //     include: [
+        //         {
+        //             model: user,
+        //             as: "user",
+        //             attributes: {
+        //                 exclude: ["createdAt", "updatedAt", "password", "role", "id", "gender", "phone", "address"],
+        //             },
+        //         }]
+        // });
+
+        // if (!trans) {
+        //     return res.send({
+        //         status: "failed",
+        //         message: "data not found",
+        //     });
+        // }
 
         await transaction.update({
-            transferProof: trans.transferProof,
-            remainingActive: trans.remainingActive,
-            userStatus: trans.userStatus,
-            paymentStatus: trans.paymentStatus
-        }, { where: id })
+            userStatus: "Subscribed",
+            paymentStatus: "Approved"
+        }, { where: { userid: id } })
 
-        const newTrans = await transaction.findOne({
-            include: [{
-                model: user,
-                as: "user",
-                attributes: {
-                    exclude: ["createdAt", "updatedAt", "password", "role", "id"],
-                },
-            },
-            ],
-            attributes: {
-                exclude: ["createdAt", "updatedAt"],
-            },
-        }, { where: id });
         res.send({
             status: 'success',
             data: {
-                newTrans
+                trans
+            }
+        })
+    } catch (error) {
+        res.status(400).send({
+            status: 'Bad Request',
+            message: error
+        })
+    }
+}
+
+exports.patchDecline = async (req, res) => {
+    try {
+        const { id } = req.params
+        console.log(id);
+        // const trans = await transaction.findOne({
+        //     where: { userid: id },
+        //     attributes: {
+        //         exclude: ["createdAt", "updatedAt"],
+        //     },
+        //     include: [
+        //         {
+        //             model: user,
+        //             as: "user",
+        //             attributes: {
+        //                 exclude: ["createdAt", "updatedAt", "password", "role", "id", "gender", "phone", "address"],
+        //             },
+        //         }]
+        // });
+
+        // if (!trans) {
+        //     return res.send({
+        //         status: "failed",
+        //         message: "data not found",
+        //     });
+        // }
+
+        await transaction.update({
+            userStatus: "Not Subscribe",
+            paymentStatus: "Decline"
+        }, { where: { userid: id } })
+
+        res.send({
+            status: 'success',
+            data: {
+                trans
             }
         })
     } catch (error) {

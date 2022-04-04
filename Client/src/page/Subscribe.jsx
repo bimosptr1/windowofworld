@@ -2,7 +2,7 @@ import MenuOFF from '../components/MenuOFF'
 import Subs from '../components/Subs'
 import { Container, Row, Col } from 'react-bootstrap';
 
-function Home() {
+function Subscribe() {
     return (
         <Container fluid>
             <Row className='mt-4'>
@@ -19,4 +19,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default Subscribe;

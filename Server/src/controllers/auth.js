@@ -11,13 +11,12 @@ exports.register = async (req, res) => {
             email: Joi.string().email().required(),
             password: Joi.string().required(),
             fullName: Joi.string().min(4).required(),
-            role: Joi.string().required()
         })
 
         const { error } = schema.validate(data)
 
         if (error) {
-            return res.status(400).send({
+            return res.status(200).send({
                 status: 'Bad Request',
                 message: error.details[0].message
             })
@@ -30,10 +29,14 @@ exports.register = async (req, res) => {
             email: data.email,
             password: hasedPassword,
             fullName: data.fullName,
-            role: data.role
+            role: "user",
+            gender: "-",
+            phone: "-",
+            address: "-"
         })
+
         const secretKey = "myCustomPassword";
-        const token = jwt.sign({ id: createUser.id, role: createUser.role }, secretKey);
+        const token = jwt.sign({ id: createUser.id }, secretKey);
 
         res.status(200).send({
             status: 'success',
@@ -61,7 +64,8 @@ exports.login = async (req, res) => {
     const { error } = schema.validate(req.body);
 
     if (error)
-        return res.status(400).send({
+        return res.status(200).send({
+            status: "Bad Request",
             error: {
                 message: error.details[0].message,
             },
@@ -72,28 +76,59 @@ exports.login = async (req, res) => {
         const isValid = await bcrypt.compare(req.body.password, userExist.password);
 
         if (!isValid) {
-            return res.status(400).send({
-                status: "failed",
-                message: "credential is invalid",
+            return res.status(200).send({
+                status: "Bad Request",
+                message: error.details[0].message,
             });
         }
 
         const secretKey = "myCustomPassword";
-        const token = jwt.sign({ id: userExist.id, role: userExist.role }, secretKey);
+        const token = jwt.sign({ id: userExist.id }, secretKey);
 
         res.status(200).send({
-            status: 'success',
+            status: "success",
             data: {
                 fullName: userExist.fullName,
                 email: userExist.email,
+                role: userExist.role,
+                gender: userExist.gender,
+                phone: userExist.phone,
+                address: userExist.address,
                 token
             }
         })
 
     } catch (error) {
-        res.status(500).send({
-            status: 'failed',
-            message: 'Server Error'
+        res.status(400).send({
+            status: "Bad Request",
+            message: "Invalid data"
+        })
+    }
+}
+
+exports.editProfile = async (req, res) => {
+    try {
+        const { id } = req.params
+        const data = req.body;
+
+        await user.update({
+            gender: data.gender,
+            phone: data.phone,
+            address: data.address
+        }, { where: { id: id } })
+
+        const newuser = await user.findOne({ where: { id: id } });
+        res.send({
+            status: 'success',
+            data: {
+                newuser
+            }
+        })
+
+    } catch (error) {
+        res.status(400).send({
+            status: 'Bad Request',
+            message: error,
         })
     }
 }

@@ -8,6 +8,7 @@ p.txt {
   font-weight: normal;
   font-size: 24px;
   line-height: 33px;
+  margin-bottom: 50px;
 }
 
 .login {
@@ -15,6 +16,7 @@ p.txt {
   height: 50px;
   margin-left: 31px;
   margin-top: 107px;
+  margin-bottom: 150px;
 }
 
 .signup {
@@ -49,7 +51,6 @@ button.signup {
 
 .Heading {
   margin-bottom: 29px;
-  font-family: Avenir;
   font-style: normal;
   font-weight: 900;
   font-size: 36px;
@@ -68,9 +69,8 @@ button.signup {
 }
 
 .ProfComp p {
-  font-family: Avenir;
   font-style: normal;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 14px;
 }
 
@@ -80,4 +80,30 @@ button.signup {
   font-weight: normal;
   font-size: 12px;
   color: #8A8C90;
+}
+
+/* table */
+.table-container {
+  margin-left: 100px;
+  margin-right: 100px;
+  color: #ffffff;
+}
+
+.table-container h3 {
+  font-size: 45px;
+  font-weight: bold;
+  margin-top: 0;
+  width: 105%;
+  line-height: 58px;
+}
+
+.table-container thead tr th {
+  color: red;
+}
+
+.img-profile-admin {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 5px solid black;
 }

@@ -1,4 +1,4 @@
-import Menu from '../components/Menu'
+import MenuOFF from '../components/MenuOFF'
 import ProfileComp from '../components/ProfileComp'
 import { Container, Row, Col } from 'react-bootstrap';
 
@@ -7,7 +7,7 @@ function Profile() {
         <Container fluid>
             <Row className='mt-4'>
                 <Col xs={6} md={3}>
-                    <Menu />
+                    <MenuOFF />
                 </Col>
                 <Col xs={12} md={9}>
                     <ProfileComp />

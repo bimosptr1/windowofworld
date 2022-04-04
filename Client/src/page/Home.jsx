@@ -1,4 +1,3 @@
-import '../style/Global.css';
 // import Menu from '../components/Menu'
 import MenuOFF from '../components/MenuOFF'
 import Frame from '../components/imgFrame'

@@ -1,4 +1,4 @@
-import Sticker from '../components/Sticker'
+import Auth from '../components/Auth'
 import { Container } from 'react-bootstrap';
 import backgroundImg from '../image/Vector.png'
 
@@ -9,10 +9,8 @@ function Landing() {
             backgroundPosition: 'center',
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
-            width: '100%',
-            height: '900px'
         }}>
-            <Sticker />
+            <Auth />
         </Container>
     );
 }

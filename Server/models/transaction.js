@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   transaction.init({
+    phoneNumber: DataTypes.INTEGER,
     transferProof: DataTypes.STRING,
     remainingActive: DataTypes.INTEGER,
     userStatus: DataTypes.STRING,

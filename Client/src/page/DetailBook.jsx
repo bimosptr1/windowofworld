@@ -1,16 +1,16 @@
-import Menu from '../components/Menu'
+import MenuOFF from '../components/MenuOFF'
 import Detail from '../components/Detail'
 import { Container, Row, Col } from 'react-bootstrap';
 
-function Home() {
+function bookID() {
     return (
         <Container fluid>
             <Row className='mt-4'>
                 <Col xs={6} md={3}>
-                    <Menu />
+                    <MenuOFF />
                 </Col>
                 <Col xs={12} md={9}>
-                    <Detail id="1" title="Serangkai" write="Valerie Patkar" />
+                    <Detail />
                 </Col>
             </Row>
         </Container>
@@ -19,4 +19,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default bookID;

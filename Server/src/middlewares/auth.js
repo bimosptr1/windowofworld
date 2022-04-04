@@ -1,34 +1,22 @@
 const jwt = require("jsonwebtoken");
 
 exports.auth = (req, res, next) => {
+    const authHeader = req.header("Authorization");
+    const token = authHeader && authHeader.split(" ")[1];
+    // check if user send token via Authorization header or not
+    if (!token) {
+        // rejected request and send response access denied
+        return res.status(401).send({ message: "Access denied!" });
+    }
+
     try {
-        let header = req.header("Authorization");
-        let token = header.replace("Bearer ", "");
-
-        if (!header || !token) {
-            return res.statuus(401).send({
-                message: "Access Denied",
-            });
-        }
-
         const secretKey = "myCustomPassword";
-        const verified = jwt.verify(token, secretKey);
-
+        const verified = jwt.verify(token, secretKey); //verified token
         req.user = verified;
-
-        const testRole = verified.role
-        if (testRole === "admin" || testRole === "ADMIN") {
-            next();
-        } else {
-            return res.statuus(401).send({
-                message: "You must be admin",
-            });
-        }
-
+        next(); // if token valid go to the next request
     } catch (error) {
-        console.log(error);
-        res.status(401).send({
-            message: "Token invalid",
-        });
+        // if token not valid send response invalid token
+        res.status(400).send({ message: "Invalid token" });
     }
 };
+
